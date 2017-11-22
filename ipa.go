@@ -18,8 +18,6 @@ import (
 	"regexp"
 	"strings"
 	"time"
-
-	"github.com/ubccr/kerby/khttp"
 )
 
 const (
@@ -211,8 +209,7 @@ func (c *Client) rpc(method string, params []string, options map[string]interfac
 		// If session is set, use the session id
 		req.Header.Set("Cookie", fmt.Sprintf("ipa_session=%s", c.session))
 	} else {
-		// default to using Kerberos auth (SPNEGO)
-		client.Transport = &khttp.Transport{Next: tr, KeyTab: c.KeyTab}
+		return nil, fmt.Errorf("Please login first")
 	}
 
 	res, err := client.Do(req)
