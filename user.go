@@ -65,6 +65,30 @@ func (u *UserRecord) HasGroup(group string) bool {
 	return false
 }
 
+// Add a user, call FreeIPA user_add method
+func (c *Client) UserAdd(uid string, giveName string, sn string, cn string, pwd string) (*UserRecord, error) {
+	options := map[string]interface{}{
+		"givenname":    giveName,
+		"sn":           sn,
+		"cn":           cn,
+		"userpassword": pwd,
+	}
+
+	res, err := c.rpc("user_add", []string{uid}, options)
+
+	if err != nil {
+		return nil, err
+	}
+
+	var userRec UserRecord
+	err = json.Unmarshal(res.Result.Data, &userRec)
+	if err != nil {
+		return nil, err
+	}
+
+	return &userRec, nil
+}
+
 // Fetch user details by call the FreeIPA user-show method
 func (c *Client) UserShow(uid string) (*UserRecord, error) {
 
