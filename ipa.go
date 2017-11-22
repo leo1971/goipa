@@ -34,7 +34,6 @@ var (
 type Client struct {
 	Host    string
 	CaCert  string
-	KeyTab  string
 	session string
 }
 
