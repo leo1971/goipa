@@ -84,12 +84,20 @@ type Response struct {
 func init() {
 	// If ca.crt for ipa exists, use it as the cert pool
 	// otherwise default to system root ca.
-	pem, err := ioutil.ReadFile("/etc/ipa/ca.crt")
-	if err == nil {
-		ipaCertPool = x509.NewCertPool()
-		if !ipaCertPool.AppendCertsFromPEM(pem) {
-			ipaCertPool = nil
-		}
+	// pem, err := ioutil.ReadFile("/etc/ipa/ca.crt")
+	// if err == nil {
+	// 	ipaCertPool = x509.NewCertPool()
+	// 	if !ipaCertPool.AppendCertsFromPEM(pem) {
+	// 		ipaCertPool = nil
+	// 	}
+	// }
+}
+
+func UserInit(cert []byte) {
+	pem := cert
+	ipaCertPool = x509.NewCertPool()
+	if !ipaCertPool.AppendCertsFromPEM(pem) {
+		ipaCertPool = nil
 	}
 }
 
